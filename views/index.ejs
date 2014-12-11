@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head ng-app>
+  	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
+    <!--<script src="routes/index.js"></script>-->
+    <title><%= title%></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+  </head>
+
+  <body  ng-app="">
+    <h1><%= title%></h1>
+    
+    <p>Welcome to <%= title%>!</p>
+    
+    <div class="container" > 
+
+      <form method="POST" action="/">
+
+        <input class="form-control" type="text" id="userSearchString" name="userSearchString" value=""/>
+        <input type="submit" value="search" />
+      </form>
+    <div>
+    <h2><%= targetStr%></h2>
+    <ul>
+	<% wordnetDatas.forEach(function(wordnetData) { %>
+		<li>
+			<b>SynsetOffset:</b> <%= wordnetData.synsetOffset %> <br>
+		    <b>Pos:</b> <%= wordnetData.pos %> <br>
+            <b>Lemma:</b> <%= wordnetData.lemma %><br>
+            <b>Synonyms:</b> <%= wordnetData.synonyms %><br>
+            <b>Gloss:</b> <%= wordnetData.gloss %><br><br>
+	    </li>
+	<% }); %>
+</ul>
+  </body>
+  <br>
+  <hr>
+    <img src="http://wordnet.princeton.edu/wordnet/banner_logo.png" height="40" width="200">&nbsp;&nbsp;<img src="http://www.csie.ntnu.edu.tw/image/ntnulogo4.gif" height="40" width="40">
+</html>
