@@ -58,7 +58,6 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
 module.exports = app;
 
 // searching wordNet...
@@ -74,7 +73,6 @@ function WordInfo(synsetOffset, pos, lemma, synonyms, gloss){
   this.synonyms = synonyms;
 } // function WordInfo()
 
-
 function SearchingWordNet( userSearchString, res ) {
   var natural = require('natural');
   var wordnet = new natural.WordNet('/usr/local/lib/node_modules/WNdb/dict');
@@ -87,10 +85,7 @@ function SearchingWordNet( userSearchString, res ) {
                                         result.pos,
                                         result.lemma,
                                         result.synonyms,
-                                        result.gloss
-    	                                  );
-        //json = one_wordInfo.toJSONString();
-        //wordnetDatas[i] = JSON.parse(json);
+                                        result.gloss );
         wordnetDatas[i]  = one_wordInfo;
         i++;
       });
@@ -110,7 +105,6 @@ app.post('/', function(req, res){
     res.render('index',{ title: 'NTNU Bioinformatics courses',
     	                  wordnetDatas: wordnetDatas,
     	                  targetStr : 'You have searched : '+ userSearch });*/
-    console.log(wordnetDatas);
     wordnetDatas = [];
 });
 
@@ -126,7 +120,7 @@ app.get('/',function(req,res){
 });
 
 app.listen(8080);
-console.log('8080 is the magic port');
+console.log('listenning 8080 port');
 
 
 

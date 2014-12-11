@@ -2,7 +2,8 @@
 <html>
   <head ng-app>
   	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
-
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
     <!--<script src="routes/index.js"></script>-->
     <title><%= title%></title>
@@ -12,17 +13,20 @@
   <body  ng-app="">
     <h1><%= title%></h1>
     
-    <p>Welcome to <%= title%>!</p>
-    
+    <p>This system is an online version of WordNet.</p>
+    <br>
     <div class="container" >
 
       <form method="POST" action="/">
 
-        <input class="form-control" type="text" id="userSearchString" name="userSearchString" value=""/>
-        <input type="submit" value="search" />
+        <input class="form-control" type="text" id="userSearchString" name="userSearchString" value="" placeholder="Enter a word you want to search" /><button type="submit" class="btn btn-primary">Search</button>
       </form>
+    </div>
+    	<br><br>
     <div>
-    <h2><%= targetStr%></h2>
+    <div class="alert alert-success" role="alert">
+      <h4><%= targetStr%></h4>
+    </div>
     <ul>
 	<% wordnetDatas.forEach(function(wordnetData) { %>
 		<li>
@@ -34,8 +38,10 @@
 	    </li>
 	<% }); %>
 </ul>
+</div>
   </body>
   <br>
   <hr>
-    <img src="http://wordnet.princeton.edu/wordnet/banner_logo.png" height="40" width="200">&nbsp;&nbsp;<img src="http://www.csie.ntnu.edu.tw/image/ntnulogo4.gif" height="40" width="40">
+    <img src="http://wordnet.princeton.edu/wordnet/banner_logo.png" height="40" width="200"><img src="http://i.imgur.com/cWVSLzY.png" height="40" >&nbsp;&nbsp;<img src="http://www.csie.ntnu.edu.tw/image/ntnulogo4.gif" height="40" width="40"><br>
+    @NTNU Speech and Machine Intelligence Laboratory (2014)
 </html>

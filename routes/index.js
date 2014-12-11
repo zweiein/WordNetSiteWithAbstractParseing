@@ -13,19 +13,16 @@ app.use(bodyParser.json());
 var userSearch = 'network';
 var wordnetDatas = [];
 
-function WordInfo(crossline, synsetOffset, pos, lemma, synonyms, gloss){
+function WordInfo(synsetOffset, pos, lemma, synonyms, gloss){
 // assign values to object
   this.synsetOffset = synsetOffset;
-  this.crossline = crossline;
   this.pos = pos;
   this.lemma = lemma;
   this.gloss = gloss;
   this.synonyms = synonyms;
 } // function WordInfo()
 
-
 function SearchingWordNet( userSearchString ) {
- console.log('start searching...');
   var natural = require('natural');
   var wordnet = new natural.WordNet('/usr/local/lib/node_modules/WNdb/dict');
   var i = 0 ;
@@ -37,26 +34,13 @@ function SearchingWordNet( userSearchString ) {
                                         result.pos,
                                         result.lemma,
                                         result.synonyms,
-                                        result.gloss
-    	                                  );
-        //json = one_wordInfo.toJSONString();
-        //wordnetDatas[i] = JSON.parse(json);
+                                        result.gloss );
         wordnetDatas[i]  = one_wordInfo;
-        //wordnetDatas.push(one_wordInfo);
         i++;
       });
       return wordnetDatas;
   });
 } // SearchingWordNet()
-/*
-router.post('/', function(req, res){
-	userSearch = req.body.userSearchString;
-    console.log(req.body.userSearchString);
-
-    
-    res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  wordnetDatas: wordnetDatas });
-});*/
 
 SearchingWordNet('network');
 
