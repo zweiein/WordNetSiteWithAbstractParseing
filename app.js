@@ -25,6 +25,8 @@ app.use(logger('dev'));
 app.use('/', routes);
 app.use('/users', users);
 
+//app.get('/ajax', routes.ajax);
+
 //using bodyParser and POST for catching html inputss
 app.use(bodyParser.urlencoded({
   extended: true
@@ -58,7 +60,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
-module.exports = app;
+//module.exports = app;
 
 // searching wordNet...
 var userSearch = 'network';
@@ -92,9 +94,16 @@ function SearchingWordNet( userSearchString, res ) {
       //return wordnetDatas;
       res.render('index',{ title: 'NTNU Bioinformatics courses',
     	                  wordnetDatas: wordnetDatas,
+                        //targetStr : '<a href="www.google.com">test a link </a>' });
     	                  targetStr : 'You have searched : '+ userSearch });
   });
 } // SearchingWordNet()
+/*
+// ajax communicatetion
+app.get('/ajax', function(res, req){
+  res.send(req.body);
+  console.log(req.body);
+});*/
 
 app.post('/', function(req, res){
 	console.log('app.post: @app.js');
@@ -108,19 +117,45 @@ app.post('/', function(req, res){
     wordnetDatas = [];
 });
 
+var output = 'hi';
+app.get('/ajax',function(req,res){
+  //res.send('hi');
+  console.log('app.get: ' + req.body);
+  res.send(output);
+});
+
+app.post('/ajax',function(req,res){
+  //res.send('hi');
+  console.log('app.post: '+  JSON.stringify(req.body));
+  output = JSON.stringify(req.body);
+  res.json(output);
+  //res.send(output);
+});
+
+// create web page : about0~about2
+for (var i = 0 ; i < 3 ; i++) {
+  app.get('/about'+i, function(req,res, app){
+    res.send('page00');
+  });
+} // for
+
+
+// 'You have searched : ' + userSearch
 app.get('/',function(req,res){
 	console.log('app.get: @app.js');
 	//SearchingWordNet(userSearch);
 	console.log(userSearch);
 	console.log(wordnetDatas);
+
     res.render('index', { title: 'NTNU Bioinformatics courses',
     	                  wordnetDatas: wordnetDatas, 
-    	                  targetStr : 'You have searched : '+ userSearch });
+    	                  targetStr : 'You have searched : '+ userSearch});
     // -> render layout.ejs with index.ejs as `body`.
 });
 
-app.listen(8080);
-console.log('listenning 8080 port');
+
+app.listen(4649);
+console.log('listenning 4649 port');
 
 
 

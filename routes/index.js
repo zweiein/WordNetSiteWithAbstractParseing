@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+var initialMsg = 'Please Enter the keyword you want to search...';
+var link ='<a href="www.google.com">test a link </a>';
 // searching wordNet...
 var userSearch = 'network';
 var wordnetDatas = [];
@@ -44,18 +46,30 @@ function SearchingWordNet( userSearchString ) {
 
 SearchingWordNet('network');
 
+/*
+// ajax communicatetion
+router.get('/ajax', function(res, req){
+  //res.send(req.body);
+  res.send('new page!');
+  console.log(req.body);
+});*/
+/*
+exports.ajax = function(req, res) {
+  console.log(req.body);
+};*/
+
 /* GET home page. */
 router.get('/',function(req,res){
 	console.log('router.get: @index.js');
 	SearchingWordNet(userSearch);
 	console.log(userSearch);
 	console.log(wordnetDatas);
+
     res.render('index', { title: 'NTNU Bioinformatics courses',
     	                  wordnetDatas: wordnetDatas,
-    	                  targetStr : 'Please Enter the keyword you want to search...' });
+    	                  targetStr : initialMsg });
     wordnetDatas = [];
 });
-
 
 module.exports = router;
 

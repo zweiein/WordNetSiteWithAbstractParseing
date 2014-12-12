@@ -4,6 +4,7 @@
   	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
     <!--<script src="routes/index.js"></script>-->
     <title><%= title%></title>
@@ -19,10 +20,15 @@
 
       <form method="POST" action="/">
 
-        <input class="form-control" type="text" id="userSearchString" name="userSearchString" value="" placeholder="Enter a word you want to search" /><button type="submit" class="btn btn-primary">Search</button>
+        <textarea class="form-control" type="text" id="userSearchString" name="userSearchString" value="" rows="5" placeholder="Enter sentences you want to search"></textarea><button type="submit" class="btn btn-primary">Search</button>
       </form>
+      <div id="ajaxtest"><button type="submit" class="btn btn-primary">send Ajax message</button></div>
     </div>
     	<br><br>
+      <div id="showmsg">
+        
+      </div>
+      <br>
     <div>
     <div class="alert alert-success" role="alert">
       <h4><%= targetStr%></h4>
@@ -39,6 +45,36 @@
 	<% }); %>
 </ul>
 </div>
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+      <script type="text/javascript">
+        $(function(){
+          $('#ajaxtest').click(function(){
+            $.ajax({
+              url : '/ajax',
+              data : { str : "Hello from ajax!", 
+                       author :  "test",  
+                       inf : "consume; \"She didn't touch her food all night\""   },
+              type : 'POST'
+            });
+          });
+        });
+      </script>
+
+      <script type="text/javascript">
+        $(function(){
+          $('#ajaxtest').click(function(){
+            $.ajax({
+              url : '/ajax',
+              type : 'GET',
+              success: function(data){
+                console.log('success!');
+                console.log(data.toString());
+                $('#showmsg').text('Recieved messages from server :' + data.toString());
+              }
+            });
+          });
+        });
+      </script>
   </body>
   <br>
   <hr>
