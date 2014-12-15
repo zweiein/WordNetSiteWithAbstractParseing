@@ -32,7 +32,8 @@ function SearchingWordNet( userSearchString ) {
 
   wordnet.lookup(String(userSearch), function(results) {
       results.forEach(function(result) {
-        var one_wordInfo = new WordInfo(result.synsetOffset, 
+        var one_wordInfo = new WordInfo(result.wordInfo,
+                                        result.synsetOffset, 
                                         result.pos,
                                         result.lemma,
                                         result.synonyms,
