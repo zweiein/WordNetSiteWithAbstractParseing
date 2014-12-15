@@ -71,6 +71,7 @@ var replace_dot = '';
 var temp_token_sets = '';
 var inputs_into_token = [] ;
 var current = '' ;
+var count 
 
 
 function WordInfo(word, synsetOffset, pos, lemma, synonyms, gloss){
@@ -89,7 +90,6 @@ var full_text_datasets = []; // 存放整個文章輸入wordnet後的json
   //       {第三個word的同義詞資訊},
   //        ......       }
   // 每一個同義詞資訊是一個object array，其中每個元素都是他的同義詞
-
 function SearchingWordNet( userSearchString, res, req ) {
   var natural = require('natural');
   var wordnet = new natural.WordNet('/usr/local/lib/node_modules/WNdb/dict');
@@ -117,76 +117,45 @@ function SearchingWordNet( userSearchString, res, req ) {
   console.log(replace_dot + '\n-------------------');
   console.log(inputs_into_token.length + '\n-------------------');
   console.log(inputs_into_token + '\n-------------------');
-  // 到這邊就拿到正常的token，可以開始塞進wordnet
+  // inputs_into_token裏面正常的token，可以開始塞進wordnet
 
-  var count = inputs_into_token.length;
+  count = inputs_into_token.length;
 
-  //然後一一餵給wordnet拿出資料
-  //並存入json檔中
+  //然後一一餵給wordnet拿出資料   //並存入json檔中
   for ( walk = 0 ; walk < inputs_into_token.length ; walk++ ) {
     current = inputs_into_token[walk];
     console.log('$ ' + current);
-      // console.log('$$ ' + current);
-      //setTimeout( function(){
+      // console.log('$$ ' + current);   //setTimeout( function(){
+      // 將使用者輸入的字切成token後送到wordnet去抓同義字資訊
       wordnet.lookup(current, function(results) {
-        
-        /*
+        // 每個字可能有很多同義字，每個同義字是一個one_wordInfo的object
+        //用foreach把所有的這種object塞到wordnetDatas的array
         results.forEach(function(result) {
 
-          var one_wordInfo = new WordInfo(current, 
-                                          result.synsetOffset, 
-                                          result.pos,
-                                          result.lemma,
-                                          result.synonyms,
-                                          result.gloss );
+          var one_wordInfo = new WordInfo(current, result.synsetOffset, 
+                                          result.pos, result.lemma,
+                                          result.synonyms, result.gloss );
           wordnetDatas.push(one_wordInfo);
-          //console.log('#');
-        }); */// forEach
-        //wordnetDatas.slice(0, 0, current);
-        //console.log('=======\n' + JSON.stringify(wordnetDatas));
-        //count--;
-        //wordnetDatas.slice(0, 0, current);
-        //results.unshift("\"word\":" + "\"" +  current + "\"");
-        console.log('$$ ' + JSON.stringify(results));
-        wordnetDatas.push(results);
-        //console.log('# ' + count);
-        //console.log('$$$ ' + current);
-        //console.log('%%', wordnetDatas.length);
-
-        //wordnetDatas = [];
-        //console.log('********\n' + JSON.stringify(full_text_datasets));
+          console.log('$＄ ' + current);
+        }); // forEach
+        //console.log('$$ ' + JSON.stringify(results));
+        //wordnetDatas.push(results);
       } // function(results) 
     ); // lookup
-    if (wordnetDatas.length > 0) {
-          var temp = "{ \"word\" : " + current + " }";
-          wordnetDatas.unshift(temp);
-          full_text_datasets.push(wordnetDatas);
-        } // if
+    current = inputs_into_token[walk+1];
+    //if (wordnetDatas.length > 0) { 
+      console.log('&');
+          //var temp = "{ \"word\" : " + current + " }";
+          //wordnetDatas.unshift(temp);
+      full_text_datasets.push(wordnetDatas);
+    //} // if
     console.log('=======\n' + JSON.stringify(wordnetDatas));
-    /*
-    console.log('$$ ' + current);
-      if (wordnetDatas.length > 0)
-        full_text_datasets.push(wordnetDatas);
 
-    console.log('********\n' + JSON.stringify(full_text_datasets));*/
+    //console.log('********\n' + JSON.stringify(full_text_datasets));
   } // for
-/*
-  while ( count > 0 ) {
-    ;
-  } // while
-*/
-  
-  //console.log('********\n' + JSON.stringify(full_text_datasets));
-/*
-  res.render('index',{ title: 'NTNU Bioinformatics courses',
-                        //wordnetDatas: wordnetDatas,
-                        //targetStr : '<a href="www.google.com">test a link </a>' });
-                        targetStr : 'You have searched : '+ userSearch });
-*/
-
-  //console.log('88888888888');
-
 } // SearchingWordNet()
+
+
 /*
 // ajax communicatetion
 app.get('/ajax', function(res, req){
@@ -219,6 +188,7 @@ app.post('/ajax',function(req,res){
   //res.send('hi');
   console.log('app.post: ');
   //console.log(JSON.stringify(full_text_datasets));
+  console.log('#' + count);
 
   output = JSON.stringify(full_text_datasets);
   res.json(output);
@@ -251,6 +221,5 @@ app.get('/',function(req,res){
 
 app.listen(4649);
 console.log('listenning 4649 port');
-
 
 
