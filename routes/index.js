@@ -66,9 +66,9 @@ router.get('/',function(req,res){
 	console.log(wordnetDatas);
 
     res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  wordnetDatas: wordnetDatas,
+    	                  //wordnetDatas: wordnetDatas,
     	                  targetStr : initialMsg });
-    wordnetDatas = [];
+    // wordnetDatas = [];
 });
 
 module.exports = router;

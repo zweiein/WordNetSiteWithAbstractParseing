@@ -33,9 +33,11 @@
     <div class="alert alert-success" role="alert">
       <h4><%= targetStr%></h4>
     </div>
+    <!--
     <ul>
 	<% wordnetDatas.forEach(function(wordnetData) { %>
 		<li>
+      <b>Word:</b> <%= wordnetData.word %> <br>
 			<b>SynsetOffset:</b> <%= wordnetData.synsetOffset %> <br>
 		    <b>Pos:</b> <%= wordnetData.pos %> <br>
             <b>Lemma:</b> <%= wordnetData.lemma %><br>
@@ -43,7 +45,7 @@
             <b>Gloss:</b> <%= wordnetData.gloss %><br><br>
 	    </li>
 	<% }); %>
-</ul>
+</ul> -->
 </div>
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
       <script type="text/javascript">
@@ -69,7 +71,7 @@
               success: function(data){
                 console.log('success!');
                 console.log(data.toString());
-                $('#showmsg').text('Recieved messages from server :' + data.toString());
+                $('#showmsg').text('Recieved messages from server :' + JSON.stringify(data));
               }
             });
           });
