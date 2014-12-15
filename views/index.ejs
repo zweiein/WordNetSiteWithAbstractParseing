@@ -20,9 +20,7 @@
 
       <form method="POST" action="/">
 
-        <textarea class="form-control" type="text" id="userSearchString" name="userSearchString" value="" rows="5" placeholder="Enter sentences you want to search"></textarea><button type="submit" class="btn btn-primary">Search</button>
-      </form>
-      <div id="ajaxtest"><button type="submit" class="btn btn-primary">send Ajax message</button></div>
+        <textarea class="form-control" type="text" id="userSearchString" name="userSearchString" value="" rows="5" placeholder="Enter sentences you want to search"></textarea><button id="submitpost"  type="submit" class="btn btn-primary">Search</button></form><div id="ajaxtest"><button type="submit" class="btn btn-primary">Parse</button></div>
     </div>
     	<br><br>
       <div id="showmsg">
@@ -33,36 +31,24 @@
     <div class="alert alert-success" role="alert">
       <h4><%= targetStr%></h4>
     </div>
-    <!--
-    <ul>
-	<% wordnetDatas.forEach(function(wordnetData) { %>
-		<li>
-      <b>Word:</b> <%= wordnetData.word %> <br>
-			<b>SynsetOffset:</b> <%= wordnetData.synsetOffset %> <br>
-		    <b>Pos:</b> <%= wordnetData.pos %> <br>
-            <b>Lemma:</b> <%= wordnetData.lemma %><br>
-            <b>Synonyms:</b> <%= wordnetData.synonyms %><br>
-            <b>Gloss:</b> <%= wordnetData.gloss %><br><br>
-	    </li>
-	<% }); %>
-</ul> -->
+    
 </div>
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
       <script type="text/javascript">
         $(function(){
           $('#ajaxtest').click(function(){
+            ;
             $.ajax({
               url : '/ajax',
               data : { str : "Hello from ajax!", 
                        author :  "test",  
                        inf : "consume; \"She didn't touch her food all night\""   },
               type : 'POST'
-            });
-          });
-        });
+            }); // ajax
+          }); // click
+        }); // ready
       </script>
-
-      <script type="text/javascript">
+      <script>
         $(function(){
           $('#ajaxtest').click(function(){
             $.ajax({
@@ -72,10 +58,10 @@
                 console.log('success!');
                 console.log(data.toString());
                 $('#showmsg').text('Recieved messages from server :' + JSON.stringify(data));
-              }
-            });
-          });
-        });
+              } // success
+            }); // ajax
+          }) // onclick
+        }); // ready
       </script>
   </body>
   <br>

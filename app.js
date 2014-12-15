@@ -2,6 +2,7 @@
 // load the things we need
 var express = require('express');
 var app = express();
+var async = require('async');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -118,16 +119,19 @@ function SearchingWordNet( userSearchString, res, req ) {
   console.log(inputs_into_token + '\n-------------------');
   // 到這邊就拿到正常的token，可以開始塞進wordnet
 
+  var count = inputs_into_token.length;
+
   //然後一一餵給wordnet拿出資料
   //並存入json檔中
   for ( walk = 0 ; walk < inputs_into_token.length ; walk++ ) {
     current = inputs_into_token[walk];
     console.log('$ ' + current);
-
-    wordnet.lookup(current, function(results) {
-        //console.log('$$ ' + inputs_into_token);
+      // console.log('$$ ' + current);
+      //setTimeout( function(){
+      wordnet.lookup(current, function(results) {
+        
+        /*
         results.forEach(function(result) {
-          //console.log('$$ ' + current);
 
           var one_wordInfo = new WordInfo(current, 
                                           result.synsetOffset, 
@@ -136,22 +140,29 @@ function SearchingWordNet( userSearchString, res, req ) {
                                           result.synonyms,
                                           result.gloss );
           wordnetDatas.push(one_wordInfo);
-          i++;
-        }); // forEach
+          //console.log('#');
+        }); */// forEach
         //wordnetDatas.slice(0, 0, current);
         //console.log('=======\n' + JSON.stringify(wordnetDatas));
-        
-        console.log('$$ ' + current);
-        console.log('%%', wordnetDatas.length);
-        if (wordnetDatas.length > 0)
-          full_text_datasets.push(wordnetDatas);
+        //count--;
+        //wordnetDatas.slice(0, 0, current);
+        //results.unshift("\"word\":" + "\"" +  current + "\"");
+        console.log('$$ ' + JSON.stringify(results));
+        wordnetDatas.push(results);
+        //console.log('# ' + count);
+        //console.log('$$$ ' + current);
+        //console.log('%%', wordnetDatas.length);
 
-        wordnetDatas = [];
+        //wordnetDatas = [];
         //console.log('********\n' + JSON.stringify(full_text_datasets));
       } // function(results) 
-      
-    );
-    //console.log('=======\n' + JSON.stringify(wordnetDatas));
+    ); // lookup
+    if (wordnetDatas.length > 0) {
+          var temp = "{ \"word\" : " + current + " }";
+          wordnetDatas.unshift(temp);
+          full_text_datasets.push(wordnetDatas);
+        } // if
+    console.log('=======\n' + JSON.stringify(wordnetDatas));
     /*
     console.log('$$ ' + current);
       if (wordnetDatas.length > 0)
@@ -159,11 +170,21 @@ function SearchingWordNet( userSearchString, res, req ) {
 
     console.log('********\n' + JSON.stringify(full_text_datasets));*/
   } // for
-
+/*
+  while ( count > 0 ) {
+    ;
+  } // while
+*/
+  
+  //console.log('********\n' + JSON.stringify(full_text_datasets));
+/*
   res.render('index',{ title: 'NTNU Bioinformatics courses',
                         //wordnetDatas: wordnetDatas,
                         //targetStr : '<a href="www.google.com">test a link </a>' });
                         targetStr : 'You have searched : '+ userSearch });
+*/
+
+  //console.log('88888888888');
 
 } // SearchingWordNet()
 /*
@@ -176,14 +197,15 @@ app.get('/ajax', function(res, req){
 app.post('/', function(req, res){
 	console.log('app.post: @app.js');
 	userSearch = req.body.userSearchString;
-  console.log(userSearch);
+  //console.log(userSearch);
   SearchingWordNet(userSearch, res, req); 
-    /* 
+     
   res.render('index',{ title: 'NTNU Bioinformatics courses',
     	                  wordnetDatas: wordnetDatas,
-    	                  targetStr : 'You have searched : '+ userSearch });*/
+    	                  targetStr : 'You have searched : '+ userSearch });
   //wordnetDatas = [];
   //full_text_datasets = [];
+  
 });
 
 var output = 'hi';
@@ -196,13 +218,12 @@ app.get('/ajax',function(req,res){
 app.post('/ajax',function(req,res){
   //res.send('hi');
   console.log('app.post: ');
-  console.log(JSON.stringify(full_text_datasets));
-/*
-  for ( var j = 0 ; j < full_text_datasets.length ; j++ )
-    console.log(JSON.stringify(full_text_datasets[j]));
-*/
+  //console.log(JSON.stringify(full_text_datasets));
+
   output = JSON.stringify(full_text_datasets);
   res.json(output);
+  full_text_datasets = [];
+  wordnetDatas = [];
   //res.send(output);
 });
 
@@ -222,7 +243,7 @@ app.get('/',function(req,res){
 	//console.log(wordnetDatas);
 
     res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  wordnetDatas: wordnetDatas, 
+    	                  //wordnetDatas: wordnetDatas, 
     	                  targetStr : 'You have searched : '+ userSearch});
     // -> render layout.ejs with index.ejs as `body`.
 });
