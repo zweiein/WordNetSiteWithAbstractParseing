@@ -64,7 +64,9 @@ app.use(function(err, req, res, next) {
 //module.exports = app;
 
 // searching wordNet...
-var userSearch = 'network';
+var userSearch = [];
+//userSearch.push('network');
+
 var wordnetDatas = [];
 var replace_comma = '';
 var replace_dot = '';
@@ -73,7 +75,8 @@ var inputs_into_token = [] ;
 var current = [] ;
 var count = 0 ;
 var one_wordInfo ;
-
+var control = 2;
+var last_search = '';
 
 function WordInfo(word, synsetOffset, pos, lemma, synonyms, gloss){
 // assign values to object
@@ -113,14 +116,11 @@ function SearchingWordNet( userSearchString, res, req ) {
   for ( var i = 0 ; i < temp_token_sets.length ; i++)  
     if ( temp_token_sets[i].length != 0 ) 
       inputs_into_token.push(temp_token_sets[i]);
-
-  console.log('///' + replace_comma + '\n-------------------');
-  console.log(replace_dot + '\n-------------------');
-  console.log(inputs_into_token.length + '\n-------------------');
-  console.log(inputs_into_token + '\n-------------------');
+  //console.log('///' + replace_comma + '\n-------------------');
+  //console.log(replace_dot + '\n-------------------');
+  //console.log(inputs_into_token.length + '\n-------------------');
+  //console.log(inputs_into_token + '\n-------------------');
   // inputs_into_token裏面正常的token，可以開始塞進wordnet
-
-  count = inputs_into_token.length;
 
   //然後一一餵給wordnet拿出資料   //並存入json檔中
   for ( walk = 0 ; walk < inputs_into_token.length ; walk++ ){
@@ -144,26 +144,52 @@ function SearchingWordNet( userSearchString, res, req ) {
     //console.log('=======\n' + JSON.stringify(wordnetDatas));
     //console.log('********\n' + JSON.stringify(full_text_datasets));
   } // for
-  console.log('finish!!!!');
-  res.render('index',{ title: 'NTNU Bioinformatics courses',
-                        wordnetDatas: wordnetDatas,
-                        targetStr : 'You have searched : '+ userSearch });
+  console.log('$' + wordnetDatas);
 
+  setTimeout(function(){
+    res.render('index',{ title: 'NTNU Bioinformatics courses',
+                         wordnetDatas: wordnetDatas,
+                         targetStr : 'You have searched : '+ userSearch });
+  }, 5000);
   wordnetDatas = [];
   full_text_datasets = [];
 } // SearchingWordNet()
 
 
+
+
 app.post('/', function(req, res){
-	console.log('app.post: @app.js');
+	console.log('------------\napp.post: @app.js');
 	userSearch = req.body.userSearchString;
   //console.log(userSearch);
   SearchingWordNet(userSearch, res, req); 
      
   console.log('END app.post: @app.js');
+  wordnetDatas = [];
 });
-var output = 'hi';
 
+// 'You have searched : ' + userSearch
+app.get('/',function(req,res){
+	console.log('app.get: @app.js');
+	//SearchingWordNet(userSearch);
+	//console.log(userSearch);
+	//console.log(wordnetDatas);
+
+  res.render('index', { title: 'NTNU Bioinformatics courses',
+     	                  wordnetDatas: wordnetDatas, 
+    	                  targetStr : 'waiting for inputs...'});
+    // -> render layout.ejs with index.ejs as `body`.
+});
+
+/*
+// create web page : about0~about2
+for (var i = 0 ; i < 3 ; i++) {
+  app.get('/about'+i, function(req,res, app){
+    res.send('page00');
+  });
+} // for
+*/
+var output = 'hi';
 
 app.get('/ajax',function(req,res){
   //res.send('hi');
@@ -184,28 +210,6 @@ app.post('/ajax',function(req,res){
   wordnetDatas = [];
   //res.send(output);
 });
-/*
-// create web page : about0~about2
-for (var i = 0 ; i < 3 ; i++) {
-  app.get('/about'+i, function(req,res, app){
-    res.send('page00');
-  });
-} // for
-*/
-
-// 'You have searched : ' + userSearch
-app.get('/',function(req,res){
-	console.log('app.get: @app.js');
-	//SearchingWordNet(userSearch);
-	//console.log(userSearch);
-	//console.log(wordnetDatas);
-
-    res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  wordnetDatas: wordnetDatas, 
-    	                  targetStr : 'You have searched : '+ userSearch});
-    // -> render layout.ejs with index.ejs as `body`.
-});
-
 
 app.listen(4649);
 console.log('listenning 4649 port');

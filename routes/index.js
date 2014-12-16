@@ -45,7 +45,7 @@ function SearchingWordNet( userSearchString ) {
   });
 } // SearchingWordNet()
 
-SearchingWordNet('network');
+//SearchingWordNet('network');
 
 /*
 // ajax communicatetion
@@ -58,16 +58,15 @@ router.get('/ajax', function(res, req){
 exports.ajax = function(req, res) {
   console.log(req.body);
 };*/
-var inputs_into_token = [] ;
-/* GET home page. */
+
+// GET home page. 
 router.get('/',function(req,res){
-	console.log('router.get: @index.js');
-	SearchingWordNet(userSearch);
+	console.log('------------\nrouter.get: @index.js');
+	//SearchingWordNet(userSearch);
 	console.log(userSearch);
-	console.log(wordnetDatas);
 
     res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  wordnetDatas: wordnetDatas,
+    	                  wordnetDatas: [],
     	                  targetStr : initialMsg });
     // wordnetDatas = [];
 });
