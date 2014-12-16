@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
+    <!--<script src="http://jquery.lightbox_me.js"></script>-->
+    <script src="http://res.sentsin.com/lay/lib/layer/layer.min.js?v=1.8.5"></script>
     <!--<script src="routes/index.js"></script>-->
     <title><%= title%></title>
     <link rel='stylesheet' href='/stylesheets/style.css'>
@@ -20,7 +22,9 @@
 
       <form method="POST" action="/">
 
-        <textarea class="form-control" type="text" id="userSearchString" name="userSearchString" value="" rows="5" placeholder="Enter sentences you want to search"></textarea><button id="submitpost"  type="submit" class="btn btn-primary">Search</button></form><div id="ajaxtest"><button type="submit" class="btn btn-primary">Parse</button></div>
+        <textarea class="form-control" type="text" id="userSearchString" name="userSearchString" rows="5" placeholder="Enter sentences you want to search"></textarea><button id="submitpost"  type="submit" class="btn btn-primary">Search</button></form>
+<!--
+        <div id="ajaxtest"><button type="submit" class="btn btn-primary">Parse</button>--></div>
     </div>
     	<br><br>
       <div id="showmsg">
@@ -28,9 +32,18 @@
       </div>
       <br>
     <div>
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" id="alertmsg">
       <h4><%= targetStr%></h4>
-    </div>
+     
+    <br>
+    <!--</div>
+
+     <script type="text/javascript">
+       $('#alertmsg').mouseover(function(e) {
+           layer.msg('Hello layer', 1, -1);
+         });
+
+     </script>-->
     
 </div>
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -63,6 +76,53 @@
           }) // onclick
         }); // ready
       </script>
+      <div id="showresult">
+        <% var i = 0  ; %>
+      <% wordnetDatas.forEach(function(wordnetData) { %><br>
+      <% i++; %> <br>
+      <%= i %>.&nbsp;
+      <pre class="searchword"><b>Word:</b><%= wordnetData.word %><br></pre>
+        <b>SynsetOffset:</b> <%= wordnetData.synsetOffset %> <br>
+        <b>Pos:</b> <%= wordnetData.pos %> <br>
+        <b>Lemma:</b> <%= wordnetData.lemma %><br>
+        <b>Synonyms:</b> <%= wordnetData.synonyms %><br>
+        <b>Gloss:</b> <%= wordnetData.gloss %><br>
+      <% }); %>
+      </div>
+<!--
+     <script>
+/*
+     console.log(a.length);*/
+     console.log($('#showresult').contents().length);
+          
+     $(function(){
+/*
+        var length = $('#showresult').contents().length;
+        var con_inf = $('#showresult').contents();
+
+        for (var i = 0; i < length.length; $('#showresult').next()) {
+          $new_id = con_inf.$('.searchword').text();
+          con_inf.$('.searchword').attr('id',$new_id);
+        }*/
+      
+          $('#showresult').each(function(){
+            $new_id = $('.searchword').text();
+            console.log($new_id);
+            $('.searchword').attr('id',$new_id);
+            //console.log( $('#searchword').text() );
+            //console.log(document.getElementById($new_id));
+            
+            $(this).next();
+          });      
+    });
+    //console.log(document.getElementById('on'));
+   /*
+     $(function(){
+          $('#searchword').click(function(){
+            $.find('#result')
+          }); // click
+    });*/ // ready
+   </script>-->
   </body>
   <br>
   <hr>

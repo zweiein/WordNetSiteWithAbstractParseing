@@ -58,7 +58,7 @@ router.get('/ajax', function(res, req){
 exports.ajax = function(req, res) {
   console.log(req.body);
 };*/
-
+var inputs_into_token = [] ;
 /* GET home page. */
 router.get('/',function(req,res){
 	console.log('router.get: @index.js');
@@ -67,7 +67,7 @@ router.get('/',function(req,res){
 	console.log(wordnetDatas);
 
     res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  //wordnetDatas: wordnetDatas,
+    	                  wordnetDatas: wordnetDatas,
     	                  targetStr : initialMsg });
     // wordnetDatas = [];
 });

@@ -134,7 +134,7 @@ function SearchingWordNet( userSearchString, res, req ) {
                                       result.pos, result.lemma,
                                       result.synonyms, result.gloss );
           wordnetDatas.push(one_wordInfo);
-          console.log('#$＄ ' + JSON.stringify(one_wordInfo));
+          //console.log('#$＄ ' + JSON.stringify(one_wordInfo));
          
         }); // forEach
         
@@ -142,8 +142,15 @@ function SearchingWordNet( userSearchString, res, req ) {
     ); // lookup
     full_text_datasets.push(wordnetDatas);
     //console.log('=======\n' + JSON.stringify(wordnetDatas));
-    console.log('********\n' + JSON.stringify(full_text_datasets));
+    //console.log('********\n' + JSON.stringify(full_text_datasets));
   } // for
+  console.log('finish!!!!');
+  res.render('index',{ title: 'NTNU Bioinformatics courses',
+                        wordnetDatas: wordnetDatas,
+                        targetStr : 'You have searched : '+ userSearch });
+
+  wordnetDatas = [];
+  full_text_datasets = [];
 } // SearchingWordNet()
 
 
@@ -153,12 +160,7 @@ app.post('/', function(req, res){
   //console.log(userSearch);
   SearchingWordNet(userSearch, res, req); 
      
-  res.render('index',{ title: 'NTNU Bioinformatics courses',
-    	                  //wordnetDatas: wordnetDatas,
-    	                  targetStr : 'You have searched : '+ userSearch });
-  //wordnetDatas = [];
-  //full_text_datasets = [];
-  
+  console.log('END app.post: @app.js');
 });
 var output = 'hi';
 
@@ -167,13 +169,14 @@ app.get('/ajax',function(req,res){
   //res.send('hi');
   console.log('app.get: ' + req.body);
   res.send(output);
+
 });
 
 app.post('/ajax',function(req,res){
   //res.send('hi');
   console.log('app.post: ');
   //console.log(JSON.stringify(full_text_datasets));
-  console.log('#' + count);
+  //console.log('#' + count);
 
   output = JSON.stringify(full_text_datasets[0]);
   res.json(output);
@@ -181,14 +184,14 @@ app.post('/ajax',function(req,res){
   wordnetDatas = [];
   //res.send(output);
 });
-
+/*
 // create web page : about0~about2
 for (var i = 0 ; i < 3 ; i++) {
   app.get('/about'+i, function(req,res, app){
     res.send('page00');
   });
 } // for
-
+*/
 
 // 'You have searched : ' + userSearch
 app.get('/',function(req,res){
@@ -198,7 +201,7 @@ app.get('/',function(req,res){
 	//console.log(wordnetDatas);
 
     res.render('index', { title: 'NTNU Bioinformatics courses',
-    	                  //wordnetDatas: wordnetDatas, 
+    	                  wordnetDatas: wordnetDatas, 
     	                  targetStr : 'You have searched : '+ userSearch});
     // -> render layout.ejs with index.ejs as `body`.
 });
