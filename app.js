@@ -3,6 +3,8 @@
 var express = require('express');
 var app = express();
 var async = require('async');
+var fs = require('fs');
+var md = require('node-markdown').Markdown;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -179,6 +181,19 @@ app.get('/',function(req,res){
      	                  wordnetDatas: wordnetDatas, 
     	                  targetStr : 'waiting for inputs...'});
     // -> render layout.ejs with index.ejs as `body`.
+});
+
+app.get('/show',function(req, res){
+  fs.readFile("./AllWordInfo.md", function(err, data){
+    if (err) 
+      console.log('read file error!');
+    else {
+      str = md(String(data));
+      res.send(String(str));
+      //res.send(String(data));
+    }
+  }); // readFile
+
 });
 
 /*
